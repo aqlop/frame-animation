@@ -47,6 +47,14 @@ function loadImage(images, callback, timeout) {
 		doLoad(item);
 	}
 
+
+	//遍历完成如果计数为0，则直接调用 callback
+	if (!count) {
+		callback(success);
+	} else if (timeout) {
+		timeoutId = setTimeout(onTimeout, timeout);
+	}
+
 	/**
 	 * 真正进行图片加载的函数
 	 * @param  {Object} item 图片元素对象
@@ -87,10 +95,26 @@ function loadImage(images, callback, timeout) {
 
 			}
 
-			if (!--count) {
+
+			//每张图片加载完成，计数器减一，当所有图片加载完成
+			//且没有超时的情况，清除超时计时器，且执行回调函数
+			if (!--count && !isTimeout) {
+				
+				clearTimeout(timeoutId);
 				callback(success);
 			}
 		}
+	}
+
+
+	/**
+	 * 超时函数
+	 * @return {[type]} [description]
+	 */
+	function onTimeout() {
+		
+		isTimeout = true;
+		callback(false);
 	}
 }
 
