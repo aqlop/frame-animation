@@ -4,12 +4,20 @@
 
 'use strict'
 
+var loadImage = require('./imageloader');
+
 //初始化状态
 var STATE_INITIAL = 0;
 //开始状态
 var STATE_START = 1;
 //停止状态
 var STATE_STOP = 2;
+
+//同步任务
+var TASK_SYNC = 0;
+//异步任务
+var TASK_ASYNC = 1;
+
 
 /**
  * 帧动画库类
@@ -28,7 +36,13 @@ function Animation() {
  * @return {[type]}         [description]
  */
 Animation.prototype.loadImage = function (imglist) {
-	// body...
+	
+	var taskFn = function (next) {
+		loadImage(imglist.slice(), next);
+	};
+	var type = TASK_SYNC;
+
+	return this._add(taskFn, type);
 }
 
 
@@ -140,3 +154,12 @@ Animation.prototype.dispose = function () {
 	// body...
 }
 
+/**
+ * 添加一个任务到任务队列中
+ * @param {[type]} taskFn [description]
+ * @param {[type]} type   [description]
+ */
+Animation.prototype._add = function (taskFn, type) {
+	
+	
+}
