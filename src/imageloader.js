@@ -90,11 +90,12 @@ function loadImage(images, callback, timeout) {
 			img.onload = img.onerror = null;
 
 			try{
+
 				delete window[item.id];
-			} catch (e) {
+			}
+			catch (e) {
 
 			}
-
 
 			//每张图片加载完成，计数器减一，当所有图片加载完成
 			//且没有超时的情况，清除超时计时器，且执行回调函数
